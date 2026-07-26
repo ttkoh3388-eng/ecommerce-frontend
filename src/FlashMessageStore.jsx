@@ -17,6 +17,16 @@ export const useFlashMessage = () => {
         setFlashMessage({
             message, type
         });
+
+        // after 3 seconds, call clearMessage automatically
+        setTimeout(clearMessage, 6500);
+    }
+
+    const clearMessage = () => {
+        setFlashMessage({
+            "message": "",
+            "type":"info"
+        })
     }
 
     // whatever we return from a hook funtion can be used by

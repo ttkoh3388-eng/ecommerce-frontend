@@ -16,7 +16,7 @@ const validationSchema = Yup.object({
 export default function RegisterPage() {
 
     const [, setLocation] = useLocation();
-    const [showMessage] = useFlashMessage();
+    const {showMessage} = useFlashMessage();
 
     // API endpoint that returns all the possible marketing preferences
     // Important: Make sure the ID numbers match the database
@@ -61,7 +61,7 @@ export default function RegisterPage() {
             // TODO: have an if statement to see if the form has been submitted properly
 
             // show the flash message
-            showMessage("You have signed up successfully", "success");
+            showMessage("You have signed up successfully", "success")
             setLocation("/");
         }, 3000)
 
