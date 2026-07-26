@@ -1,6 +1,20 @@
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { useLocation } from 'wouter';
+
+const validationSchema = Yup.object({
+    name: Yup.string().required("Name is required").min(2, "The name must be at least 2 characters"),
+    email: Yup.string().email("Invalid email address").required("Email is required"),
+    password: Yup.string().required("Password is required").min(6, "Must b eat least 6 characters long"),
+    confirmPassword: Yup.string().oneOf([
+        Yup.ref("password"),
+        null
+    ], "Your password does not match").required("Please confirm your password")
+})
 
 export default function RegisterPage() {
+
+    const [, setLocation] = useLocation();
 
     // API endpoint that returns all the possible marketing preferences
     // Important: Make sure the ID numbers match the database
@@ -34,14 +48,24 @@ export default function RegisterPage() {
     // argument 1 - the values of the form fields
     // argument 2 - helper object that let us manipulate the form
     const handleSubmit = (values, formikHelpers) => {
+        // indicate that the form is in process of being submitted
+        formikHelpers.setSubmitting(true);
         console.log(values)
+        // have to process the register form by sending to the backend
+        // axios.post(...)
+        setTimeout(function(){
+            console.log("The form has finished processing")
+            formikHelpers.setSubmitting(false);
+            // TODO: have an if statement to see if the form has been submitted properly
+            setLocation("/");
+        }, 3000)
 
     }
 
     return <>
         <div className="container">
             <h1>Register Page</h1>
-            <Formik initialValues={(initialValues)} onSubmit={handleSubmit}>
+            <Formik initialValues={(initialValues)} onSubmit={handleSubmit} validationSchema={validationSchema}>
                 {
                     (formik) => (
                         <Form>
@@ -53,6 +77,7 @@ export default function RegisterPage() {
                                     className="form-control"
                                     name="name"
                                 />
+                                <ErrorMessage name="name" component="div" className="text-danger"/>
                             </div>
 
                             {/* Email */}
@@ -63,6 +88,7 @@ export default function RegisterPage() {
                                     className="form-control"
                                     name="email"
                                 />
+                                <ErrorMessage name="email" component="div" className="text-danger"/>
                             </div>
 
                             {/* Password */}
@@ -73,6 +99,7 @@ export default function RegisterPage() {
                                     className="form-control"
                                     name="password"
                                 />
+                                <ErrorMessage name="password" component="div" className="text-danger"/>
                             </div>
 
                             {/* Confirm Password */}
@@ -83,6 +110,7 @@ export default function RegisterPage() {
                                     className="form-control"
                                     name="confirmPassword"
                                 />
+                                <ErrorMessage name="confirmPassword" component="div" className="text-danger"/>
                             </div>
 
                             {/* Salutation */}
@@ -170,6 +198,7 @@ export default function RegisterPage() {
                             <button
                                 type="submit"
                                 className="btn btn-primary mb-3"
+                                disabled={formik.isSubmitting}
                             >Submit</button>
                         </Form>
                     )
