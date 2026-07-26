@@ -10,10 +10,18 @@ import ProductPage from "./ProductPage";
 // imports for wouter
 import { Route, Switch } from "wouter";
 
+// import the FlashMessage hook
+import { useFlashMessage } from "./FlashMessageStore";
+
 export default function App() {
 
+  const {message} = useFlashMessage();
 
   return (<>
+
+    <div className={`alert alert-${useFlashMessage.type}`}>
+      {useFlashMessage.message}
+    </div>
    
     <Navbar/>
 
