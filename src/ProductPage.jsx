@@ -1,6 +1,9 @@
 import ProductCard from "./ProductCard"
+import { useCart } from "./CartStore"
 
 export default function ProductPage() {
+
+    const { addToCart } = useCart();
 
     const products = [
         {
@@ -41,6 +44,10 @@ export default function ProductPage() {
                                     imageUrl={p.imageUrl}
                                     name={p.name}
                                     price={p.price}
+                                    onAddToCart={() => {
+                                        addToCart(p)
+                                        
+                                    }}
                                 />
                             </div>
                         )
