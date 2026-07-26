@@ -80,7 +80,43 @@ export const useCart = () => {
 
     }
 
+    // item is a cartItmem
+    const removeFromCart = (item) => {
+        // 1. find the index of the item we delete
+        const indexToDelete = cart.findIndex(i => i.product_id === item.product_id);
+
+        if (indexToDelete > -1){
+        // 2. clone the array
+        // 3. modify the clone to delete the item by its index
+        const cloned = cart.toSpliced(indexToDelete, 1);
+        // 4. replace the clone into the atom
+        setCart(cloned);
+        }
+    }
+
+    const modifyQuantity = (item, newQuantity) => {
+
+        if (newQuantity <= 0) {
+            return;
+        }
+
+        // 1. find the index of the itme we want to tweak the quantity for
+        const indexToModify = cart.findIndex(i => i.product_id === item.product_id);
+        // 2. clone the cart item
+        const modifiedCartItem = {...cart[indexToModify]};
+        // 3. modify the copy of the cart item
+        modifiedCartItem.quantity = newQuantity;
+        // 4. clone the cart array
+        // 5. update the cart
+        const cloneCart = cart.with(indexToModify, modifiedCartItem);
+
+        // 6. replace the cart atom with the cloned
+        setCart(cloneCart);
+
+
+    }
+
     return {
-        cart, getCartTotal, addToCart
+        cart, getCartTotal, addToCart, removeFromCart, modifyQuantity
     }
 }

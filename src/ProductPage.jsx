@@ -1,9 +1,11 @@
 import ProductCard from "./ProductCard"
 import { useCart } from "./CartStore"
+import { useFlashMessage } from "./FlashMessageStore";
 
 export default function ProductPage() {
 
     const { addToCart } = useCart();
+    const { showMessage } = useFlashMessage();
 
     const products = [
         {
@@ -45,8 +47,9 @@ export default function ProductPage() {
                                     name={p.name}
                                     price={p.price}
                                     onAddToCart={() => {
-                                        addToCart(p)
-                                        
+                                        addToCart(p);
+                                        //showMessage("Product added to shopping cart successfully", "success");
+                                        showMessage(<div>Product added to shopping cartr successfully</div>, "success");
                                     }}
                                 />
                             </div>
