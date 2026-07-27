@@ -1,5 +1,6 @@
 import ProductCard from "./ProductCard"
 import axios from "axios";
+
 import { useEffect, useState } from "react";
 export default function HomePage() {
 
@@ -19,7 +20,7 @@ export default function HomePage() {
         async function fetchData() {
             // when we refer to static URL (i.e image, CSS file, JS file, JSON file)
             // it will always default to the public folder
-            const response = await axios.get("products.json");
+            const response = await axios.get("product.json");
             setProducts(response.data);
         }
         fetchData();
@@ -27,15 +28,15 @@ export default function HomePage() {
     }, [])
     
     // Product List Rendering and Data Fetching
-    const productJSX = [];
-    for (let p of products) {
-        productJSX.push( <div className="col-md-3 mb-4" key={p.id}>
-                        <ProductCard name={p.name}
-                            imageUrl={p.imageUrl}
-                            price={p.price}
-                        />
-                    </div>)
-    }
+     const productJSX = products.map(product => (
+        <div className="col-md-3 mb-4" key={product.id ?? product.name}>
+            <ProductCard
+                name={product.name}
+                imageUrl={product.imageUrl}
+                price={product.price}
+            />
+        </div>
+    ));
 
     return <>
         <div className="container">
