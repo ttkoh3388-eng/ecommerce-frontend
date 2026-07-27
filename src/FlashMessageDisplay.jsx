@@ -3,7 +3,7 @@ import { useFlashMessage } from "./FlashMessageStore";
 
 export default function FlashMessageDisplay() {
 
-    const { message } = useFlashMessage();
+    const { flashMessage } = useFlashMessage();
 
     return <>
     {
